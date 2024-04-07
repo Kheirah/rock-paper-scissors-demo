@@ -4,6 +4,12 @@ import "./App.css";
 
 const options = ["✊", "✋", "✌️"];
 
+const winStates = [
+  ["✊", "✌️"],
+  ["✌️", "✋"],
+  ["✋", "✊"],
+];
+
 function App() {
   const [player, setPlayer] = useState("");
   const [computer, setComputer] = useState("🎲");
@@ -15,6 +21,18 @@ function App() {
     }, 2000);
   }
 
+  /* derived state */
+  let outcome = "pending";
+  if (computer != "🎲" && player != computer) {
+    outcome = winStates.some(
+      ([human, npc]) => player === human && computer === npc
+    )
+      ? "win"
+      : "lose";
+  } else if (player === computer) {
+    outcome = "draw";
+  }
+
   return (
     <>
       <div>
@@ -24,6 +42,9 @@ function App() {
       <h2>
         {player} vs. {computer}
       </h2>
+      <div className="card">
+        <OutcomeMessage outcome={outcome} />
+      </div>
       <div>
         Choose your option
         {options.map((option) => (
@@ -44,5 +65,17 @@ function App() {
     </>
   );
 }
+
+const outcomeMessages = {
+  pending: "wait for it ...",
+  win: "YOU WIN!",
+  lose: "YOU LOSE!",
+  draw: "DRAW!",
+};
+
+const OutcomeMessage = ({ outcome }) => {
+  const message = outcomeMessages[outcome];
+  return message ? <h2>{message}</h2> : null;
+};
 
 export default App;
