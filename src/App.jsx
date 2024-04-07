@@ -3,6 +3,7 @@ import scissors from "./assets/scissors.svg";
 import "./App.css";
 
 const options = ["✊", "✋", "✌️"];
+
 const winStates = [
   ["✊", "✌️"],
   ["✌️", "✋"],
@@ -42,10 +43,7 @@ function App() {
         {player} vs. {computer}
       </h2>
       <div className="card">
-        {outcome === "pending" && <h3>wait for it ...</h3>}
-        {outcome === "win" && <h3>YOU WIN!</h3>}
-        {outcome === "draw" && <h3>DRAW!</h3>}
-        {outcome === "lose" && <h3>YOU LOSE!</h3>}
+        <OutcomeMessage outcome={outcome} />
       </div>
       <div>
         Choose your option
@@ -67,5 +65,17 @@ function App() {
     </>
   );
 }
+
+const outcomeMessages = {
+  pending: "wait for it ...",
+  win: "YOU WIN!",
+  lose: "YOU LOSE!",
+  draw: "DRAW!",
+};
+
+const OutcomeMessage = ({ outcome }) => {
+  const message = outcomeMessages[outcome];
+  return message ? <h2>{message}</h2> : null;
+};
 
 export default App;
